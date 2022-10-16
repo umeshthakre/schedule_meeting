@@ -1,0 +1,160 @@
+const schedulemeeting =async (req,res)=>{
+    //variables from req.body
+    let {users,dateOfMeeting,meetingStart,meetingEnd,roomId} = req.body;
+
+    console.log(users,dateOfMeeting,meetingStart,meetingEnd,roomId);
+    //validation of fields
+    // check if fields are missing
+    if(!users || !dateOfMeeting || !meetingEnd || !meetingStart || !roomId){
+        return res.send({
+            success:false,
+            message:"one or more field is missing"
+        })
+    }
+    // converting date and time to standard format
+    //converting date and time of meeting to moment js Date format
+   meetingStart = dateOfMeeting +" "+ meetingStart;
+   console.log(meetingStart)
+   meetingStart = moment(meetingStart,'YYYY-MM-DD hh:mm:ss a');
+   console.log(meetingStart);
+   meetingEnd = dateOfMeeting + " "+meetingEnd;
+   meetingEnd = moment(meetingEnd,'YYYY-MM-DD hh:mm:ss a')
+    console.log(meetingEnd);
+
+    dateOfMeeting = moment(dateOfMeeting,"YYYY-MM-DD")
+
+    // checking if the date and time are valid formats
+    if(
+    !moment(dateOfMeeting).isValid() 
+    || !moment(meetingStart).isValid() 
+    || !moment(meetingEnd).isValid()
+    ){
+        return res.send({
+            success:false,
+            message:"wrong date format"
+        })
+    }
+
+    //checking if meeting start time is greater than end time
+
+    if(meetingEnd < meetingStart){
+        console.log("starting greater");
+        return res.send({
+            success:false,
+            message:"invalid start and end time"
+        })
+    }
+
+    let allUser = null;
+
+     User.find({
+        'username':{
+            $in:users
+        }
+    })
+    .then((usersfromdb)=>{
+        allUser = usersfromdb;
+        if(usersfromdb.length !== users.length){
+            return res.send({
+                success:false,
+                message:"users not found"
+            })
+        }
+        console.log(usersfromdb)
+
+        if(allUser.length !== 0 && allUser !== null){
+            for(let i = 0;i<allUser.length;i++){
+                let meetings = allUser[i];
+    
+                for(let j = 0;j<meetings.length;j++){
+                    if(
+                        moment(meetingStart).isBetween(meetings[i].meetingStart,meetings[i].meetingEnd)
+                         ||
+                        moment(meetingEnd).isBetween(meetings[i].meetingStart,meetings[i].meetingEnd)
+                        ||
+                        moment(meetings[i].meetingStart).isBefore(meetingStart)
+                         &&
+                        moment(meetings[i].meetingEnd).isAfter(meetingEnd)
+                        ){ 
+                        return res.send({success:false, message:`${allUser[i]} has a meeting ${meetings[j]}`})
+                    }
+                   
+                }
+            }
+    
+    
+            //check if room is available;
+            let roomMeetings = null;
+    
+            Room.findOne({roomId})
+            .then((roomfromdb)=>{
+                if(!roomfromdb){
+                    roomMeetings = roomfromdb;
+                    return res.send({
+                        success:false,
+                        message:"room does not exist"
+                    })
+                }
+
+                if(roomfromdb!== null){
+                    for(let i = 0;i<roomfromdb.meetings.length;i++){
+                        let meeting = roomfromdb.meeting[i];
+                        if(
+                            moment(meeting.meetingStart).isBetween(meetingStart,meetingEnd)
+                            ||
+                            moment(meeting.meetingEnd).isBetween(meetingStart,meetingEnd)
+                            ||
+                            moment(meeting.meetingStart).isBefore(meetingStart)
+                             &&
+                            moment(meeting.meetingEnd).isAfter(meetingEnd)
+                        ){
+                            return res.send({
+                                success:false,
+                                message:
+                                `${roomfromdb.roomId} is not available for the meeting between 
+                                ${meeting.meetingStart} and ${meeting.meetingEnd}`
+                            });
+                        }
+                    }
+                }
+
+                let myMeeting = {
+                    allUser,
+                    meetingStart,
+                    meetingEnd,
+                    roomId,
+                    dateOfMeeting
+                }
+
+                    
+            for(let i = 0;i<allUser.length;i++){
+                let mUser = allUser[i];
+                mUsername = mUser.username;
+                User.findOneAndUpdate(
+                    {mUsername},
+                    {$push:{meetings:myMeeting}},
+                    {new:true}
+                ).then((meetings)=>{
+                    if(i+1 === allUser.length){
+                        return res.send({
+                            success:true,
+                            meetings:meetings,
+                        })
+                    }
+                })
+                
+            }
+    
+        
+
+            })
+            .catch((err)=>console.log(err))
+    
+
+        }
+
+
+    })
+    .catch(err=>console.log(err))
+    
+}

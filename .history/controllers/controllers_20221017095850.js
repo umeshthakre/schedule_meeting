@@ -64,6 +64,7 @@ const createRoom = (req,res)=>{
 
 
 
+
 const scheduleMeeting1 = async (req,res)=>{
     let {users,dateOfMeeting,meetingStart,meetingEnd,roomId} = req.body;
 
@@ -77,15 +78,6 @@ const scheduleMeeting1 = async (req,res)=>{
         })
     }
 
-    //checking for number of users entered
-    if(users.length === 1){
-        return res.send({
-            success:false,
-            message:"only one user entered enter atleast two users"
-        })
-    }
-
-    //checking for time format of meetingStart
     regexp = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/;
     if (!regexp.test(meetingStart))
     {
@@ -93,8 +85,6 @@ const scheduleMeeting1 = async (req,res)=>{
         message:"invalid time"
       });
     }
-
-    //checking for time format of meetingEnd
     if (!regexp.test(meetingEnd))
     {
       return res.send({

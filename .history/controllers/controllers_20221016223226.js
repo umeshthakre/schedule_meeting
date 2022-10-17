@@ -64,6 +64,7 @@ const createRoom = (req,res)=>{
 
 
 
+
 const scheduleMeeting1 = async (req,res)=>{
     let {users,dateOfMeeting,meetingStart,meetingEnd,roomId} = req.body;
 
@@ -76,38 +77,12 @@ const scheduleMeeting1 = async (req,res)=>{
             message:"one or more field is missing"
         })
     }
-
-    //checking for number of users entered
-    if(users.length === 1){
-        return res.send({
-            success:false,
-            message:"only one user entered enter atleast two users"
-        })
-    }
-
-    //checking for time format of meetingStart
-    regexp = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/;
-    if (!regexp.test(meetingStart))
-    {
-      return res.send({
-        message:"invalid time"
-      });
-    }
-
-    //checking for time format of meetingEnd
-    if (!regexp.test(meetingEnd))
-    {
-      return res.send({
-        message:"invalid time"
-      });
-    }
-
     // converting date and time to standard format
     //converting date and time of meeting to moment js Date format
    meetingStart = dateOfMeeting +" "+ meetingStart;
 
    meetingStart = moment(meetingStart,'YYYY-MM-DD hh:mm:ss a');
-    console.log(meetingStart);
+
    meetingEnd = dateOfMeeting + " "+meetingEnd;
    meetingEnd = moment(meetingEnd,'YYYY-MM-DD hh:mm:ss a')
 
@@ -206,7 +181,7 @@ const scheduleMeeting1 = async (req,res)=>{
                 moment(meetings[j].meetingEnd).isAfter(moment(meetingEnd))
                 ){ 
                     
-                    let s = allUser[i].username+` has a meeting from `+
+                    let s = allUser[i].username+`has a meeting from `+
                     moment(meetings[j].meetingStart).toString()
                     +
                      `untill ${moment(meetings[j].meetingEnd)}`;

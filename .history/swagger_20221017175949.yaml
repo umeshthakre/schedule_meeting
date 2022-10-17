@@ -150,7 +150,8 @@ paths:
                     type: string
                   success:
                     type: boolean
-                  
+                  username:
+                    type: string
 
         '403':
           description: Returns a JSON Object with Error and success false

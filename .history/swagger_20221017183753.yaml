@@ -94,8 +94,6 @@ paths:
                     type: string
                   success:
                     type: boolean
-                  roomId:
-                    type: string
 
 
         '403':
@@ -154,8 +152,6 @@ paths:
                     type: string
                   success:
                     type: boolean
-                  
-                  
                   
 
         '403':

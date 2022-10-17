@@ -63,10 +63,9 @@ paths:
                 properties:
                   message:
                     type: string
-                    
+                    default: false
                   success:
                     type: boolean
-                    default: false
 
   /room/createroom:
     post:
@@ -94,8 +93,6 @@ paths:
                     type: string
                   success:
                     type: boolean
-                  roomId:
-                    type: string
 
 
         '403':
@@ -109,7 +106,6 @@ paths:
                     type: string
                   success:
                     type: boolean
-                    default: false
 
   /meetings/schedulemeeting:
     post:
@@ -155,8 +151,6 @@ paths:
                   success:
                     type: boolean
                   
-                  
-                  
 
         '403':
           description: Returns a JSON Object with Error and success false
@@ -169,7 +163,6 @@ paths:
                     type: string
                   success:
                     type: boolean
-                    default: false
 
                   
                     

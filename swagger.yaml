@@ -144,7 +144,7 @@ paths:
                 meetingEnd: 18:00
                 roomId: R1
 
-      description: Accepts a room id and create a new room the database. The entered room id  must be unique otherwise an error is returned. Value of meetingStart and meetingEnd must always be in 24 hours format
+      description: Accepts various details as given in the description to schedule a meeting with various users which are in the database in a room with given roomId. Value of meetingStart and meetingEnd must always be in 24 hours format
       responses:
         '200':    # status code
           description:  Returns a JSON Object with success true if meeting is scheduled
@@ -159,8 +159,7 @@ paths:
                     type: boolean
                   
                   
-                  
-
+              
         '403':
           description: Returns a JSON Object with Error and success false
           content:

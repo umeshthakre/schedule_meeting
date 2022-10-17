@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: Schedule Meeting
+  description: REST API to Schedule Meetings with different Users in specified Rooms by Umesh Thakre
+  version: 1.0.1
+
+servers:
+  - url: https://nodejs-meeting-scheduler.onrender.com
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing

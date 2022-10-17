@@ -12,12 +12,6 @@ const {createUser,createRoom,scheduleMeeting1} = require("./controllers/controll
 //using middleware to parse incoming req where content type is json
 app.use(bodyParser.json())
 
-const swaggerUi = require('swagger-ui-express');
-
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml')
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 //database connectivity
 mongoose.connect(MONGO_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
 .then( () => console.log("connected to db"))
@@ -25,7 +19,7 @@ mongoose.connect(MONGO_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
 
 //routes
 app.get("/",(req,res)=>{
-    res.status(200).send({"message":"running successfully"});
+    res.send({"msg":"running successfully"});
 });
 
 app.post("/user/createuser",createUser);

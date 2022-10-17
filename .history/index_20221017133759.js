@@ -25,7 +25,7 @@ mongoose.connect(MONGO_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
 
 //routes
 app.get("/",(req,res)=>{
-    res.status(200).send({"message":"running successfully"});
+    res.send({"msg":"running successfully"});
 });
 
 app.post("/user/createuser",createUser);

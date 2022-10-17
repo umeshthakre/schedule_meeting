@@ -71,7 +71,7 @@ const scheduleMeeting1 = async (req,res)=>{
     //validation of fields
     // check if fields are missing
     if(!users || !dateOfMeeting || !meetingEnd || !meetingStart || !roomId){
-        return res.status(403).send({
+        return res.send({
             success:false,
             message:"one or more field is missing"
         })
@@ -79,7 +79,7 @@ const scheduleMeeting1 = async (req,res)=>{
 
     //checking for number of users entered
     if(users.length === 1){
-        return res.status(403).send({
+        return res.send({
             success:false,
             message:"only one user entered enter atleast two users"
         })
@@ -89,8 +89,7 @@ const scheduleMeeting1 = async (req,res)=>{
     regexp = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/;
     if (!regexp.test(meetingStart))
     {
-      return res.status(403).send({
-        success:false,
+      return res.send({
         message:"invalid time"
       });
     }
@@ -99,7 +98,6 @@ const scheduleMeeting1 = async (req,res)=>{
     if (!regexp.test(meetingEnd))
     {
       return res.send({
-        success:false,
         message:"invalid time"
       });
     }
@@ -122,7 +120,7 @@ const scheduleMeeting1 = async (req,res)=>{
     || !moment(meetingStart).isValid() 
     || !moment(meetingEnd).isValid()
     ){
-        return res.status(403).send({
+        return res.send({
             success:false,
             message:"wrong date format"
         })
@@ -132,7 +130,7 @@ const scheduleMeeting1 = async (req,res)=>{
 
     if(meetingEnd < meetingStart){
         console.log("starting greater");
-        return res.status(403).send({
+        return res.send({
             success:false,
             message:"invalid start and end time"
         })
@@ -212,7 +210,7 @@ const scheduleMeeting1 = async (req,res)=>{
                     moment(meetings[j].meetingStart).toString()
                     +
                      `untill ${moment(meetings[j].meetingEnd)}`;
-                return res.status(403).send({success:false, message:s})
+                return res.send({success:false, message:s})
             }
            
         }
@@ -222,7 +220,7 @@ const scheduleMeeting1 = async (req,res)=>{
     const roomfromdb = await Room.findOne({roomId})
 
     if(!roomfromdb){
-        return res.status(403).send({
+        return res.send({
             success:false,
             message:"room not found"
         })
@@ -275,7 +273,7 @@ const scheduleMeeting1 = async (req,res)=>{
             let m = `${roomfromdb.roomId.toString()} is not available for the meeting between `
             +meetingStart.toString() +` and ${meetingEnd.toString()}`
 
-            return res.status(403).send({
+            return res.send({
                 success:false,
                 message:m
             });
@@ -321,7 +319,7 @@ const scheduleMeeting1 = async (req,res)=>{
 
     
 
-    return res.status(200).send({
+    return res.send({
         success:true,
         message:"updated successfully"
     })

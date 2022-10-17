@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: Schedule Meeting
+  description: REST API to Schedule Meetings with different Users in specified Rooms by Umesh Thakre
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:4000
+    description: REST API is deployed on render
+
+
+paths:
+  /:
+    get:
+      summary: Returns a JSON Object.
+      description: JSON Object with message says running successfully.
+      responses:
+        '200':    # status code
+          description:  Returns a JSON Object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /user/createuser:
+    post:
+      summary: Accepts a username and create a new user the database
+      parameters: 
+        - name: username
+          default: User1
+      requestBody:
+       description: Optional description in *Markdown*
+       required: true
+       content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+      description: Accepts a username and create a new user the database. The entered user must be unique otherwise an error is returned
+      responses:
+        '200':    # status code
+          description:  Returns a JSON Object with user details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  success:
+                    type: boolean
+                  username:
+                    type: string
+
+                    
+
+  
+# paths:
+#   /:
+#     get:
+#       summary: returns message which says running successfully
+#       responses:
+#         '200':
+#         description: returns a json object with message 
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 success: boolean
+#                 messsage: string

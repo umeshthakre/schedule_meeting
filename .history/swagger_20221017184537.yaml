@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Schedule Meeting
   description: |
-   NOTE IF API IS SLEEPING THEN THE FIRST REQUEST WILL TAKE TIME.
+   NOTE IF API IS SLEEPING THEN THE FIRST REQUEST WILL TAKE TIME
    REST API to Schedule Meetings with different Users in specified Rooms by Umesh Thakre
     
   version: 1.0.1
